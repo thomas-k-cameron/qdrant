@@ -1,5 +1,6 @@
 use std::fmt::Write as _;
 use std::str::FromStr as _;
+use std::time::Duration;
 
 use colored::control::ShouldColorize;
 use tracing_subscriber::prelude::*;
@@ -14,6 +15,7 @@ const DEFAULT_FILTERS: &[(&str, log::LevelFilter)] = &[
     ("rustls", log::LevelFilter::Info),
     ("wal", log::LevelFilter::Warn),
     ("raft", log::LevelFilter::Warn),
+    ("[{internal=true}]", log::LevelFilter::Info),
 ];
 
 pub fn setup(user_filters: &str) -> anyhow::Result<()> {
@@ -37,13 +39,29 @@ pub fn setup(user_filters: &str) -> anyhow::Result<()> {
         fmt::layer()
             // Only use ANSI if we should colorize
             .with_ansi(ShouldColorize::from_env().should_colorize())
-            .with_span_events(fmt::format::FmtSpan::NEW)
+            .with_span_events(fmt::format::FmtSpan::NEW | fmt::format::FmtSpan::CLOSE)
             .with_filter(
                 filter::EnvFilter::builder()
                     .with_regex(false)
                     .parse_lossy(filters),
             ),
     );
+
+    let forest = tracing_forest::ForestLayer::new(
+        forest::FilterDuration::new(
+            tracing_forest::PrettyPrinter::new(),
+            Duration::from_secs(10),
+        ),
+        tracing_forest::tag::NoTag,
+    );
+
+    let forest = forest.with_filter(
+        filter::EnvFilter::builder()
+            .with_regex(false)
+            .parse_lossy("qdrant::tonic::api::points_internal_api[upsert]=debug"),
+    );
+
+    let reg = reg.with(forest);
 
     // Use `console` or `console-subscriber` feature to enable `console-subscriber`
     //
@@ -71,4 +89,40 @@ pub fn setup(user_filters: &str) -> anyhow::Result<()> {
     tracing::subscriber::set_global_default(reg)?;
 
     Ok(())
+}
+
+mod forest {
+    use tracing_forest::tree::Tree;
+    use tracing_forest::{processor, Processor};
+
+    use super::*;
+
+    #[derive(Copy, Clone, Debug)]
+    pub struct FilterDuration<T> {
+        processor: T,
+        min_duration: chrono::Duration,
+    }
+
+    impl<T: Processor> FilterDuration<T> {
+        pub fn new(processor: T, min_duration: Duration) -> Self {
+            Self {
+                processor,
+                min_duration: chrono::Duration::from_std(min_duration).unwrap(), // TODO?
+            }
+        }
+    }
+
+    impl<T: Processor> Processor for FilterDuration<T> {
+        fn process(&self, tree: Tree) -> processor::Result {
+            let Tree::Span(span) = &tree else {
+                return Ok(());
+            };
+
+            if chrono::Utc::now() - span.timestamp() < self.min_duration {
+                return Ok(());
+            }
+
+            self.processor.process(tree)
+        }
+    }
 }
