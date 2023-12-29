@@ -12,12 +12,14 @@ use parking_lot::RwLock;
 use rocksdb::DB;
 use serde_json::Value;
 
+use self::immutable_geo_index::ImmutableGeoMapIndex;
+use self::mutable_geo_index::MutableGeoMapIndex;
 use crate::common::operation_error::{OperationError, OperationResult};
 use crate::common::rocksdb_wrapper::DatabaseColumnWrapper;
 use crate::common::Flusher;
 use crate::index::field_index::geo_hash::{
-    circle_hashes, common_hash_prefix, geo_hash_to_box, polygon_hashes,
-    polygon_hashes_estimation, rectangle_hashes, GeoHash,
+    circle_hashes, common_hash_prefix, geo_hash_to_box, polygon_hashes, polygon_hashes_estimation,
+    rectangle_hashes, GeoHash,
 };
 use crate::index::field_index::stat_tools::estimate_multi_value_selection_cardinality;
 use crate::index::field_index::{
@@ -28,13 +30,9 @@ use crate::types::{
     FieldCondition, GeoBoundingBox, GeoPoint, GeoRadius, PayloadKeyType, PolygonWrapper,
 };
 
-use self::immutable_geo_index::ImmutableGeoMapIndex;
-use self::mutable_geo_index::MutableGeoMapIndex;
-
 /// Max number of sub-regions computed for an input geo query
 // TODO discuss value, should it be dynamically computed?
 const GEO_QUERY_MAX_REGION: usize = 12;
-
 
 pub enum GeoMapIndex {
     Mutable(MutableGeoMapIndex),
@@ -254,10 +252,17 @@ impl GeoMapIndex {
         &self,
         threshold: usize,
     ) -> Box<dyn Iterator<Item = (&GeoHash, usize)> + '_> {
-        let filter_condition = |(hash, size): &(&GeoHash, usize)| *size > threshold && !hash.is_empty();
+        let filter_condition =
+            |(hash, size): &(&GeoHash, usize)| *size > threshold && !hash.is_empty();
         let mut large_regions = match self {
-            GeoMapIndex::Mutable(index) => index.get_points_per_hash().filter(filter_condition).collect_vec(),
-            GeoMapIndex::Immutable(index) => index.get_points_per_hash().filter(filter_condition).collect_vec(),
+            GeoMapIndex::Mutable(index) => index
+                .get_points_per_hash()
+                .filter(filter_condition)
+                .collect_vec(),
+            GeoMapIndex::Immutable(index) => index
+                .get_points_per_hash()
+                .filter(filter_condition)
+                .collect_vec(),
         };
 
         // smallest regions first

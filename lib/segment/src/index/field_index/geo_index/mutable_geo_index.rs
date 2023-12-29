@@ -1,12 +1,16 @@
-use std::{collections::{BTreeMap, HashSet}, sync::Arc, cmp::max};
+use std::cmp::max;
+use std::collections::{BTreeMap, HashSet};
+use std::sync::Arc;
 
 use common::types::PointOffsetType;
 use parking_lot::RwLock;
 use rocksdb::DB;
 
-use crate::{index::field_index::geo_hash::{GeoHash, encode_max_precision}, types::GeoPoint, common::{rocksdb_wrapper::DatabaseColumnWrapper, operation_error::{OperationResult, OperationError}}};
-
 use super::GeoMapIndex;
+use crate::common::operation_error::{OperationError, OperationResult};
+use crate::common::rocksdb_wrapper::DatabaseColumnWrapper;
+use crate::index::field_index::geo_hash::{encode_max_precision, GeoHash};
+use crate::types::GeoPoint;
 
 pub struct MutableGeoMapIndex {
     /*
