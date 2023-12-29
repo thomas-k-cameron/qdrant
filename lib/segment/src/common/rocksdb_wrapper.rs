@@ -2,6 +2,7 @@ use std::path::Path;
 use std::sync::Arc;
 
 use parking_lot::RwLock;
+use proptest::option;
 //use atomic_refcell::{AtomicRef, AtomicRefCell};
 use rocksdb::{ColumnFamily, DBRecoveryMode, LogLevel, Options, WriteOptions, DB};
 
@@ -53,6 +54,9 @@ pub fn db_options() -> Options {
     {
         options.set_paranoid_checks(true);
     }
+
+    options.set_compression_type(rocksdb::DBCompressionType::Zstd);
+
     options
 }
 
