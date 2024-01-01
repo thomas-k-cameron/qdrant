@@ -53,6 +53,7 @@ pub fn db_options() -> Options {
     {
         options.set_paranoid_checks(true);
     }
+    options.set_compression_type(rocksdb::DBCompressionType::Zstd);
     options
 }
 
