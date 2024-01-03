@@ -56,6 +56,8 @@ pub fn db_options() -> Options {
 
     if cfg!(zstd) {
         options.set_compression_type(rocksdb::DBCompressionType::Zstd);
+    } else {
+        options.set_compression_type(rocksdb::DBCompressionType::Snappy);
     }
     options
 }

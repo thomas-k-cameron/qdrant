@@ -1,0 +1,113 @@
+960458e2988b3ba7368617a9acf84fff73f0f40a
++------------------------------------------------------------------------------+
+| WARNING: The loadimpact/k6 Docker image has been replaced by grafana/k6.     |
+|          THIS IMAGE IS DEPRECATED and its support will be discontinued after |
+|          Dec 31, 2023. Please update your scripts to use grafana/k6 to       |
+|          continue using the latest version of k6.                            |
++------------------------------------------------------------------------------+
+
+
+          /\      |‾‾| /‾‾/   /‾‾/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ‾‾\  
+   /          \   |  |\  \ |  (‾)  | 
+  / __________ \  |__| \__\ \_____/ .io
+
+  execution: local
+     script: -
+     output: -
+
+  scenarios: (100.00%) 1 scenario, 30 max VUs, 10m30s max duration (incl. graceful stop):
+           * upsert_points: 9375 iterations shared among 30 VUs (maxDuration: 10m0s, exec: upsert_points, gracefulStop: 30s)
+
+
+Run             [ 100% ] setup()
+upsert_points   [   0% ]
+
+running (00m01.9s), 30/30 VUs, 304 complete and 0 interrupted iterations
+upsert_points   [   3% ] 30 VUs  00m00.7s/10m0s  0304/9375 shared iters
+
+running (00m02.9s), 30/30 VUs, 818 complete and 0 interrupted iterations
+upsert_points   [   9% ] 30 VUs  00m01.7s/10m0s  0818/9375 shared iters
+
+running (00m03.9s), 30/30 VUs, 1309 complete and 0 interrupted iterations
+upsert_points   [  14% ] 30 VUs  00m02.7s/10m0s  1309/9375 shared iters
+
+running (00m04.9s), 30/30 VUs, 1809 complete and 0 interrupted iterations
+upsert_points   [  19% ] 30 VUs  00m03.7s/10m0s  1809/9375 shared iters
+
+running (00m05.9s), 30/30 VUs, 2311 complete and 0 interrupted iterations
+upsert_points   [  25% ] 30 VUs  00m04.7s/10m0s  2311/9375 shared iters
+
+running (00m06.9s), 30/30 VUs, 2762 complete and 0 interrupted iterations
+upsert_points   [  29% ] 30 VUs  00m05.7s/10m0s  2762/9375 shared iters
+
+running (00m07.9s), 30/30 VUs, 3239 complete and 0 interrupted iterations
+upsert_points   [  35% ] 30 VUs  00m06.7s/10m0s  3240/9375 shared iters
+
+running (00m08.9s), 30/30 VUs, 3720 complete and 0 interrupted iterations
+upsert_points   [  40% ] 30 VUs  00m07.7s/10m0s  3720/9375 shared iters
+
+running (00m09.9s), 30/30 VUs, 4167 complete and 0 interrupted iterations
+upsert_points   [  44% ] 30 VUs  00m08.7s/10m0s  4167/9375 shared iters
+
+running (00m10.9s), 30/30 VUs, 4591 complete and 0 interrupted iterations
+upsert_points   [  49% ] 30 VUs  00m09.7s/10m0s  4591/9375 shared iters
+
+running (00m11.9s), 30/30 VUs, 4954 complete and 0 interrupted iterations
+upsert_points   [  53% ] 30 VUs  00m10.7s/10m0s  4954/9375 shared iters
+
+running (00m12.9s), 30/30 VUs, 5338 complete and 0 interrupted iterations
+upsert_points   [  57% ] 30 VUs  00m11.7s/10m0s  5338/9375 shared iters
+
+running (00m13.9s), 30/30 VUs, 5732 complete and 0 interrupted iterations
+upsert_points   [  61% ] 30 VUs  00m12.7s/10m0s  5732/9375 shared iters
+
+running (00m15.0s), 30/30 VUs, 6184 complete and 0 interrupted iterations
+upsert_points   [  66% ] 30 VUs  00m13.8s/10m0s  6184/9375 shared iters
+
+running (00m15.9s), 30/30 VUs, 6527 complete and 0 interrupted iterations
+upsert_points   [  70% ] 30 VUs  00m14.7s/10m0s  6527/9375 shared iters
+
+running (00m16.9s), 30/30 VUs, 6913 complete and 0 interrupted iterations
+upsert_points   [  74% ] 30 VUs  00m15.7s/10m0s  6913/9375 shared iters
+
+running (00m17.9s), 30/30 VUs, 7303 complete and 0 interrupted iterations
+upsert_points   [  78% ] 30 VUs  00m16.7s/10m0s  7303/9375 shared iters
+
+running (00m18.9s), 30/30 VUs, 7716 complete and 0 interrupted iterations
+upsert_points   [  82% ] 30 VUs  00m17.7s/10m0s  7716/9375 shared iters
+
+running (00m19.9s), 30/30 VUs, 8138 complete and 0 interrupted iterations
+upsert_points   [  87% ] 30 VUs  00m18.7s/10m0s  8138/9375 shared iters
+
+running (00m21.0s), 30/30 VUs, 8588 complete and 0 interrupted iterations
+upsert_points   [  92% ] 30 VUs  00m19.8s/10m0s  8588/9375 shared iters
+
+running (00m21.9s), 30/30 VUs, 8963 complete and 0 interrupted iterations
+upsert_points   [  96% ] 30 VUs  00m20.7s/10m0s  8963/9375 shared iters
+
+running (00m22.9s), 30/30 VUs, 9330 complete and 0 interrupted iterations
+upsert_points   [ 100% ] 30 VUs  00m21.7s/10m0s  9330/9375 shared iters
+
+     ✓ upsert points status is OK
+
+     █ setup
+
+       ✓ delete collection status is OK
+       ✓ create new collection status is OK
+       ✓ add payload index status is OK
+
+     checks...............: 100.00% ✓ 9378         ✗ 0   
+     data_received........: 867 kB  38 kB/s
+     data_sent............: 170 MB  7.4 MB/s
+     grpc_req_duration....: avg=22.62ms min=548.36µs med=12.55ms max=1.16s p(90)=47.98ms  p(95)=78.66ms
+     iteration_duration...: avg=69.43ms min=7.95ms   med=43.02ms max=1.19s p(90)=168.35ms p(95)=208.2ms
+     iterations...........: 9375    407.960224/s
+     points_count.........: 300000  13054.727173/s
+     vus..................: 30      min=0          max=30
+     vus_max..............: 30      min=30         max=30
+
+
+running (00m23.0s), 00/30 VUs, 9375 complete and 0 interrupted iterations
+upsert_points ✓ [ 100% ] 30 VUs  00m21.8s/10m0s  9375/9375 shared iters
