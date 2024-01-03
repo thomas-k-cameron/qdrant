@@ -54,7 +54,9 @@ pub fn db_options() -> Options {
         options.set_paranoid_checks(true);
     }
 
-    if cfg!(zstd) {
+    if cfg!(lz4) {
+        options.set_compression_type(rocksdb::DBCompressionType::Lz4);
+    } else if cfg!(zstd) {
         options.set_compression_type(rocksdb::DBCompressionType::Zstd);
     } else {
         options.set_compression_type(rocksdb::DBCompressionType::Snappy);
