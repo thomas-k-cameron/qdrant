@@ -54,13 +54,15 @@ pub fn db_options() -> Options {
         options.set_paranoid_checks(true);
     }
 
-    if cfg!(lz4) {
-        options.set_compression_type(rocksdb::DBCompressionType::Lz4);
-    } else if cfg!(zstd) {
-        options.set_compression_type(rocksdb::DBCompressionType::Zstd);
-    } else {
-        options.set_compression_type(rocksdb::DBCompressionType::Snappy);
-    }
+    let ctype = match std::env::var("ROCKSDB_COMPRESSION").unwrap().as_str() {
+        "lz4" => rocksdb::DBCompressionType::Lz4,
+        "zstd" => rocksdb::DBCompressionType::Zstd,
+        "snappy" => rocksdb::DBCompressionType::Snappy,
+        _ => unreachable!(),
+    };
+    options.set_compression_type(ctype);
+    options.set_blob_compression_type(ctype);
+
     options
 }
 
