@@ -83,6 +83,7 @@ Recovering collection arxiv [00:00:00] █████████████�
 ```
 
 # snappy
+```
 @thomas-k-cameron ➜ /workspaces/qdrant (zstd) $ ROCKSDB_COMPRESSION="snappy" cargo run --release 
     Finished release [optimized] target(s) in 7.02s
      Running `target/release/qdrant`
@@ -121,4 +122,5 @@ Access web UI at http://127.0.0.1:6333/dashboard
 2024-01-11T18:35:46.107522Z DEBUG segment::vector_storage::simple_dense_vector_storage: Segment vectors: 255000    
 2024-01-11T18:35:46.107553Z DEBUG segment::vector_storage::simple_dense_vector_storage: Estimated segment size 747 MB    
 Recovering collection arxiv [00:00:00] ██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████ 1/1 (eta:0s)
-2024-01-11T18:35:46.677412Z DEBUG qdrant: Loaded collection: arxiv    
+2024-01-11T18:35:46.677412Z DEBUG qdrant: Loaded collection: arxiv
+```
